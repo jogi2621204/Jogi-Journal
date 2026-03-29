@@ -131,9 +131,9 @@ If you use this code, please cite:
   title={HydroAtmosFusion (v1.0) and OceanReasonNet (v0.1): multimodal deep
          learning for extreme rainfall prediction using ocean--atmosphere coupling},
   author={Panggabean, Jogi and Purba, Noir Primadona},
-  journal={Geoscientific Model Development},
+  journal= On Proggress
   year={2026},
-  publisher={Copernicus Publications}
+  publisher= -
 }
 ```
 
