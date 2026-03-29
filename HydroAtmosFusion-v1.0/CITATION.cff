@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite both the software and the accompanying paper."
+title: "HydroAtmosFusion"
+version: 1.0.0
+date-released: "2026-03-26"
+license: MIT
+repository-code: "https://github.com/jogipanggabean/HydroAtmosFusion"
+type: software
+authors:
+  - family-names: "Panggabean"
+    given-names: "Jogi"
+    email: "jogipanggabeann@gmail.com"
+    affiliation: "Torgas Laboratory, FPIK, Universitas Padjadjaran"
+  - family-names: "Purba"
+    given-names: "Noir Primadona"
+    affiliation: "Department of Marine Science, FPIK, Universitas Padjadjaran"
+keywords:
+  - deep learning
+  - extreme rainfall
+  - ocean-atmosphere coupling
+  - multimodal
+  - PyTorch
+preferred-citation:
+  type: article
+  title: "HydroAtmosFusion (v1.0) and OceanReasonNet (v0.1): multimodal deep learning for extreme rainfall prediction using ocean-atmosphere coupling"
+  authors:
+    - family-names: "Panggabean"
+      given-names: "Jogi"
+    - family-names: "Purba"
+      given-names: "Noir Primadona"
+  journal: "Geoscientific Model Development"
+  year: 2026

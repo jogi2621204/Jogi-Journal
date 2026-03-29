@@ -1,0 +1,166 @@
+# HydroAtmosFusion v1.0 Configuration File
+# Complete configuration for model training, evaluation, and data generation
+
+# Model architecture parameters
+model:
+  # Input channels
+  ocean_channels: 3      # SST, SSH, EKE
+  atmo_channels: 3       # CAPE, TCWV, wind_speed
+
+  # Temporal processing
+  temporal_steps: 4      # Number of time steps for temporal analysis
+
+  # Climate indices
+  climate_indices: 4     # ONI, DMI, RMM1, RMM2
+
+  # Hidden dimensions
+  hidden_dim: 256        # Base hidden dimension for feature extraction
+  num_heads: 8           # Number of attention heads
+  head_dim: 32           # Dimension per attention head
+
+  # Multi-scale processing
+  prediction_scales: 3   # Number of scales for multi-scale predictions
+
+# Loss function parameters
+loss:
+  # Loss component weights
+  alpha: 0.4             # Weight for weighted MSE loss
+  beta: 0.35             # Weight for focal loss component
+  gamma: 0.25            # Weight for FSS (Fractions Skill Score) loss
+
+  # Extreme event handling
+  lambda_extreme: 5.0    # Weight multiplier for extreme rainfall events
+
+  # Focal loss parameter
+  focal_gamma: 2.0       # Focusing parameter for focal loss
+
+  # Spatial skill score parameters
+  fss_radius: 5          # Neighborhood radius for FSS computation
+  extreme_percentile: 99 # Percentile threshold for extreme events
+
+# Training parameters
+training:
+  # Basic training configuration
+  epochs: 100            # Number of training epochs
+  batch_size: 16         # Batch size for training
+  learning_rate: 0.0001  # Initial learning rate
+  weight_decay: 0.01     # L2 regularization coefficient
+
+  # Learning rate scheduling
+  scheduler: cosine      # LR scheduler type (cosine, linear, step)
+  warmup_epochs: 5       # Number of warmup epochs
+
+  # Reproducibility
+  seed: 42               # Random seed for reproducibility
+
+# Data configuration
+data:
+  # Grid parameters
+  grid_size: 64          # Spatial grid dimensions (64x64)
+  num_days: 365          # Number of days to generate/use
+
+  # Train/validation/test split
+  train_ratio: 0.7       # Proportion for training set
+  val_ratio: 0.1         # Proportion for validation set
+  test_ratio: 0.2        # Proportion for test set
+
+  # Geographic domain
+  domain:
+    lon_min: 100.0       # Minimum longitude (°E)
+    lon_max: 130.0       # Maximum longitude (°E)
+    lat_min: -10.0       # Minimum latitude (°S, negative)
+    lat_max: 10.0        # Maximum latitude (°N)
+
+# Evaluation parameters
+evaluation:
+  # Metrics calculation
+  extreme_percentile: 99 # Percentile for extreme event evaluation
+  fss_radius: 5          # Neighborhood radius for FSS
+
+  # Lead-time analysis
+  lead_times: [6, 12, 18, 24, 36, 48, 60, 72]  # Lead times in hours
+
+# Synthetic data generation parameters
+synthetic_data:
+  # SST equation parameters (Eq. 12)
+  sst0: 28.5            # Base SST (°C)
+  a1_gaussian: 2.0      # Gaussian amplitude (°C)
+  sigma_width: 15       # Gaussian width (grid points)
+  a2_seasonal: 1.5      # Seasonal amplitude (°C)
+  sst_noise_std: 0.3    # SST noise standard deviation
+
+  # SSH equation parameters (Eq. 13)
+  alpha_steric: 0.00021 # Steric coefficient (K⁻¹)
+  h_mixed_layer: 50.0   # Mixed layer depth (m)
+
+  # CAPE equation parameters (Eq. 14)
+  cape0: 1200.0         # Reference CAPE (J/kg)
+  alpha_cape: 0.06      # Temperature sensitivity
+  tref: 28.0            # Reference temperature (°C)
+
+  # TCWV equation parameters (Eq. 15)
+  tcwv0: 55.0           # Reference TCWV (kg/m²)
+  gamma_tcwv: 4.5       # TCWV sensitivity to SST (kg/m²/K)
+
+  # Rainfall equation parameters (Eq. 16)
+  beta1: 3.5            # Rainfall scale factor
+  beta2: 1.5            # CAPE exponent
+  beta3: 2.0            # TCWV exponent
+  beta4: 0.4            # Cloud cover sensitivity
+
+  # Extreme event generation
+  extreme_prob: 0.02    # Probability of extreme event per grid/day
+  extreme_percentile: 99 # Percentile for extreme events
+
+# Data normalization and preprocessing
+preprocessing:
+  # Normalization method
+  normalize_inputs: true  # Normalize input features
+  normalize_targets: true # Normalize target variable
+
+  # Clipping for physical constraints
+  clip_rainfall: true    # Ensure non-negative rainfall
+  rainfall_max: 500.0    # Maximum rainfall threshold (mm/day)
+
+  # Outlier handling
+  remove_outliers: false # Remove extreme outliers
+  outlier_threshold: 5.0 # Outlier threshold (standard deviations)
+
+# Logging and checkpointing
+logging:
+  # Log levels
+  level: INFO            # Logging level (DEBUG, INFO, WARNING, ERROR)
+
+  # Verbosity
+  verbose: true          # Verbose output
+  print_interval: 100    # Print metrics every N batches
+
+  # Checkpointing
+  save_interval: 10      # Save checkpoint every N epochs
+  keep_best_only: true   # Keep only best model checkpoint
+  max_checkpoints: 5     # Maximum number of checkpoints to keep
+
+# Figure generation parameters
+figures:
+  dpi: 300               # Figure resolution (dots per inch)
+  figsize_single: [8, 6]     # Single panel figure size
+  figsize_double: [14, 6]    # Double panel figure size
+  figsize_triple: [16, 8]    # Triple panel figure size
+
+  # Plot style
+  style: seaborn         # Matplotlib style
+  font_family: sans-serif # Font family
+  font_size: 11          # Default font size
+
+# Hardware configuration
+hardware:
+  # Device selection
+  device: cuda           # Device type (cuda, cpu, mps)
+
+  # GPU memory optimization
+  use_mixed_precision: true  # Use mixed precision training
+  gradient_accumulation: 1   # Gradient accumulation steps
+
+  # Multi-GPU settings
+  num_workers: 4         # DataLoader workers
+  pin_memory: true       # Pin memory for faster data loading
